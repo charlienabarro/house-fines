@@ -246,10 +246,7 @@ function VoteButton({
           : "bg-letoff-500 text-ink shadow-[0_8px_0_0_var(--color-letoff-700)]"
       } ${selected ? "scale-[1.03] ring-4 ring-foam" : ""} ${dimmed ? "opacity-45 saturate-50" : ""}`}
     >
-      <span aria-hidden className="text-5xl">
-        {fine ? "🍺" : "😇"}
-      </span>
-      {fine ? "Fine" : "No fine"}
+      <span className="text-4xl">{fine ? "Fine" : "No fine"}</span>
       {selected ? (
         <span aria-hidden className="absolute right-3 top-3 grid size-7 place-items-center rounded-full bg-foam font-sans text-base text-ink">
           ✓

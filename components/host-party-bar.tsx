@@ -56,7 +56,7 @@ export function HostPartyBar({
     controls = (
       <>
         <Button size="lg" className="flex-1" busy={busy} onClick={() => call("open_voting")}>
-          Open voting 🗳️
+          Open voting
         </Button>
         {skip}
       </>
@@ -66,7 +66,7 @@ export function HostPartyBar({
     controls = (
       <>
         <Button variant="fine" size="lg" className="flex-1" busy={busy} onClick={() => call("close_voting")}>
-          Close &amp; reveal 🥁
+          Close &amp; reveal
         </Button>
         {skip}
       </>
@@ -75,14 +75,14 @@ export function HostPartyBar({
     status = `${plural(remaining, "motion")} left`;
     controls = (
       <Button size="lg" className="w-full" busy={busy} onClick={() => call("next_motion")}>
-        {heardCount === 0 && !current ? "Call the first motion ▶" : "Next motion ▶"}
+        {heardCount === 0 && !current ? "Call the first motion" : "Next motion"}
       </Button>
     );
   } else if (current) {
     status = "That was the last one";
     controls = (
       <Button size="lg" className="w-full" busy={busy} onClick={() => call("next_motion")}>
-        Show the final tally 🎉
+        Show the final tally
       </Button>
     );
   } else {
@@ -107,7 +107,7 @@ export function HostPartyBar({
               onClick={() => setSheet("menu")}
               className="shrink-0 rounded-lg px-2.5 py-1 text-xs font-semibold text-night-300 ring-1 ring-white/15 active:scale-95"
             >
-              ⚙️ Settings &amp; queue
+              Settings &amp; queue
             </button>
           </div>
           <div className="flex gap-2">{controls}</div>

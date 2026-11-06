@@ -154,7 +154,6 @@ function MotionForm({
             rows={4}
             value={reason}
             onChange={(e) => setReason(e.target.value)}
-            placeholder="Left a teabag in the sink. Again."
             className={`${field} resize-none py-3`}
           />
         </label>
@@ -197,7 +196,7 @@ function MotionForm({
         ) : null}
 
         <Button type="submit" size="lg" className="w-full" busy={busy} disabled={usedUp}>
-          File it anonymously 🤫
+          File it anonymously
         </Button>
       </form>
     </Card>

@@ -55,7 +55,7 @@ export function HostSubmitPanel({
       </div>
 
       <Button size="lg" className="mt-4 w-full" onClick={onStart} busy={busy}>
-        Start fines night 🍻
+        Start fines night
       </Button>
       <p className="mt-2 text-center text-sm text-night-300">{ready}</p>
 
@@ -214,9 +214,9 @@ export function MotionQueue({
                     type="button"
                     aria-label={`Bin the motion against ${nameOf(m.accused_id)}`}
                     onClick={() => setBinning(m)}
-                    className="grid size-10 shrink-0 place-items-center rounded-xl text-lg ring-1 ring-white/15 active:scale-95"
+                    className="h-10 shrink-0 rounded-xl px-3 text-sm font-semibold text-fine-400 ring-1 ring-white/15 active:scale-95"
                   >
-                    🗑️
+                    Bin
                   </button>
                 </li>
               ))}
