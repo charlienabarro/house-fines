@@ -5,6 +5,7 @@ import { formatDeadline, plural } from "@/lib/format";
 import { createClient } from "@/lib/supabase/client";
 import type { AppState, Member, SubmitData, SubmitStatus } from "@/lib/types";
 import { Countdown } from "./countdown";
+import { FiledOverlay } from "./filed-overlay";
 import { HostSubmitPanel } from "./host-tools";
 import { useToast } from "./toast";
 import { Button, Card } from "./ui";
@@ -65,7 +66,9 @@ function Stat({ value, label, emoji }: { value: string; label: string; emoji: st
     <div className="rounded-2xl bg-white/5 px-4 py-3 ring-1 ring-white/10">
       <div className="flex items-center gap-2">
         <span aria-hidden className="text-2xl">{emoji}</span>
-        <span className="font-display text-3xl leading-none">{value}</span>
+        <span key={value} className="inline-block animate-bump font-display text-3xl leading-none">
+          {value}
+        </span>
       </div>
       <div className="mt-1 text-sm text-night-300">{label}</div>
     </div>
@@ -88,6 +91,7 @@ function MotionForm({
   const [reason, setReason] = useState("");
   const [punishment, setPunishment] = useState("");
   const [busy, startTransition] = useTransition();
+  const [filed, setFiled] = useState<{ name: string; reason: string; key: number } | null>(null);
   const usedUp = status.my_count >= status.limit;
 
   const submit = (e: FormEvent) => {
@@ -102,17 +106,22 @@ function MotionForm({
         notify(error.message, "error");
         return;
       }
+      setFiled({
+        name: members.find((m) => m.id === accused)?.display_name ?? "Someone",
+        reason: reason.trim(),
+        key: Date.now(),
+      });
       setAccused("");
       setReason("");
       setPunishment("");
-      notify("Motion filed. Nobody will know it was you 🤫");
       await refresh();
     });
   };
 
   return (
     <Card>
-      <h2 className="font-display text-3xl tracking-wide">Lay down a motion</h2>
+      {filed ? <FiledOverlay key={filed.key} name={filed.name} reason={filed.reason} onDone={() => setFiled(null)} /> : null}
+      <h2 className="font-display text-3xl tracking-wide">Submit an accusation</h2>
       <p className="mt-1 text-sm text-night-300">Seen something? Say something. Anonymously.</p>
 
       <form onSubmit={submit} className="mt-4 space-y-4">

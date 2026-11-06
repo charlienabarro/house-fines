@@ -10,7 +10,9 @@ export function Logo({ big = false }: { big?: boolean }) {
         🍺
       </span>
       <span
-        className={`font-display leading-none tracking-wide text-foam ${big ? "text-5xl" : "text-2xl"}`}
+        className={`font-display leading-none tracking-wide text-foam ${
+          big ? "text-5xl" : "hidden text-2xl min-[420px]:inline"
+        }`}
       >
         House <span className="text-beer-400">Fines</span>
       </span>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, type ButtonHTMLAttributes, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 type Variant = "beer" | "fine" | "letoff" | "ghost" | "danger";
 type Size = "sm" | "md" | "lg";
@@ -123,7 +124,9 @@ export function Sheet({
   }, [open, onClose]);
 
   if (!open) return null;
-  return (
+  // Portal to <body>: a blurred ancestor (like Card) would otherwise trap
+  // position:fixed inside it.
+  return createPortal(
     <div
       className="fixed inset-0 z-50 flex animate-fade-in items-end justify-center bg-black/60 backdrop-blur-sm"
       onClick={onClose}
@@ -140,6 +143,7 @@ export function Sheet({
         <h2 className="mb-3 font-display text-2xl tracking-wide">{title}</h2>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

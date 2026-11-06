@@ -1,6 +1,6 @@
 "use client";
 
-import { useOptimistic, useTransition } from "react";
+import { useOptimistic, useState, useTransition } from "react";
 import { plural } from "@/lib/format";
 import { createClient } from "@/lib/supabase/client";
 import { buildTally, joinNames, topOf, type TallyRow } from "@/lib/tally";
@@ -22,13 +22,19 @@ type Props = {
 export function PartyMode({ me, members, state, party, refresh }: Props) {
   const nameOf = (id: string) => members.find((m) => m.id === id)?.display_name ?? "Someone";
 
+  // The id of the motion whose verdict has finished its drumroll on this
+  // phone. Until then, keep it out of the tally so nothing spoils the reveal.
+  const [verdictShown, setVerdictShown] = useState<string | null>(null);
+
   const current = party.motions.find((m) => m.id === state.current_motion_id) ?? null;
-  const heard = party.motions
+  const hiding = current && current.status !== "active" && verdictShown !== current.id ? current.id : null;
+  const visible = hiding ? party.motions.filter((m) => m.id !== hiding) : party.motions;
+  const heard = visible
     .filter((m) => m.status === "passed" || m.status === "failed" || m.status === "skipped")
     .sort((a, b) => (a.opened_at ?? "").localeCompare(b.opened_at ?? ""));
   const broughtUp = party.motions.filter((m) => m.status !== "pending").length;
   const remaining = Math.max(0, party.total - broughtUp);
-  const tally = buildTally(party.motions, members);
+  const tally = buildTally(visible, members);
   const eligible =
     members.length - (!state.accused_can_vote && current && members.some((m) => m.id === current.accused_id) ? 1 : 0);
 
@@ -44,6 +50,7 @@ export function PartyMode({ me, members, state, party, refresh }: Props) {
         eligible={eligible}
         nameOf={nameOf}
         refresh={refresh}
+        onVerdictShown={() => setVerdictShown(current.id)}
       />
     );
   } else if (remaining > 0 || heard.length === 0) {
@@ -92,6 +99,7 @@ function MotionStage({
   eligible,
   nameOf,
   refresh,
+  onVerdictShown,
 }: {
   motion: Motion;
   state: AppState;
@@ -100,6 +108,7 @@ function MotionStage({
   eligible: number;
   nameOf: (id: string) => string;
   refresh: () => Promise<void>;
+  onVerdictShown: () => void;
 }) {
   const accused = nameOf(motion.accused_id);
   const isMe = motion.accused_id === me.id;
@@ -111,7 +120,7 @@ function MotionStage({
     <section className="space-y-5">
       <div className="animate-pop-in text-center">
         <p className="text-xs font-bold uppercase tracking-[0.35em] text-night-300">In the dock</p>
-        <h2 className="mt-1 break-words font-display text-6xl leading-[0.95] text-beer-300 drop-shadow-[0_5px_0_rgb(0_0_0/0.45)]">
+        <h2 className="mt-1 animate-slam break-words font-display text-6xl leading-[0.95] text-beer-300 drop-shadow-[0_5px_0_rgb(0_0_0/0.45)]">
           {accused}
         </h2>
         {isMe ? (
@@ -133,7 +142,7 @@ function MotionStage({
           refresh={refresh}
         />
       ) : null}
-      {revealed ? <Reveal motion={motion} votes={votes} accused={accused} nameOf={nameOf} /> : null}
+      {revealed ? <Reveal motion={motion} votes={votes} accused={accused} nameOf={nameOf} onShown={onVerdictShown} /> : null}
     </section>
   );
 }
