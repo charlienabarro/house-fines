@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+/* Pub-at-midnight palette: deep purple night, lager gold, foam cream,
+   with red for "fined" and mint for "let off". */
+@theme {
+  --color-night-950: #0d0620;
+  --color-night-900: #160c2e;
+  --color-night-800: #21143f;
+  --color-night-700: #2e1d57;
+  --color-night-600: #432d7a;
+  --color-night-400: #8b7bc4;
+  --color-night-300: #b6a9e6;
+
+  --color-beer-200: #ffe7a3;
+  --color-beer-300: #ffd664;
+  --color-beer-400: #ffc233;
+  --color-beer-500: #f5a300;
+  --color-beer-700: #a85f00;
+
+  --color-foam: #fff7e8;
+  --color-ink: #26140a;
+
+  --color-fine-400: #ff6b86;
+  --color-fine-500: #ff3d63;
+  --color-fine-700: #a8102f;
+
+  --color-letoff-400: #4ff0bd;
+  --color-letoff-500: #1fd69f;
+  --color-letoff-700: #087a57;
+
+  --animate-pop-in: pop-in 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  --animate-fade-in: fade-in 0.2s ease-out both;
+  --animate-slide-up: slide-up 0.32s cubic-bezier(0.2, 1, 0.3, 1) both;
+  --animate-stamp: stamp 0.75s cubic-bezier(0.2, 1.7, 0.4, 1) 0.25s both;
+  --animate-shake: shake 0.4s ease-in-out both;
+  --animate-wobble: wobble 2.6s ease-in-out infinite;
+  --animate-grow-x: grow-x 0.9s cubic-bezier(0.2, 1, 0.3, 1) 0.6s both;
+  --animate-rise: rise 0.5s ease-out both;
+  --animate-fill: fill 2.4s ease-in-out infinite;
+  --animate-bubble: bubble 1.8s ease-in infinite;
+  --animate-fall: fall 2.6s cubic-bezier(0.3, 0.1, 0.6, 1) both;
+  --animate-glow: glow 2.2s ease-in-out infinite;
+
+  @keyframes pop-in {
+    from { opacity: 0; transform: translateY(14px) scale(0.96); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { transform: translateY(100%); }
+    to { transform: none; }
+  }
+  @keyframes stamp {
+    0% { opacity: 0; transform: scale(2.6) rotate(-24deg); }
+    55% { opacity: 1; transform: scale(0.9) rotate(-7deg); }
+    75% { transform: scale(1.06) rotate(-9deg); }
+    100% { opacity: 1; transform: scale(1) rotate(-8deg); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+  }
+  @keyframes wobble {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+  }
+  @keyframes grow-x {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes fill {
+    0% { height: 8%; }
+    60%, 80% { height: 82%; }
+    100% { height: 8%; }
+  }
+  @keyframes bubble {
+    0% { opacity: 0; transform: translateY(0) scale(0.6); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-46px) scale(1); }
+  }
+  @keyframes fall {
+    0% { opacity: 0; transform: translateY(-12vh) rotate(0deg); }
+    10% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(105vh) rotate(540deg); }
+  }
+  @keyframes glow {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-lilita), var(--font-bricolage), ui-sans-serif, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+/* Big entrance animations (the verdict stamp, falling pints) poke past the
+   screen edge. Without this, phones zoom the page out to fit them. */
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  background-color: var(--color-night-950);
+  background-image:
+    radial-gradient(55rem 38rem at -15% -10%, rgb(255 194 51 / 0.15), transparent 60%),
+    radial-gradient(45rem 38rem at 115% 105%, rgb(255 61 99 / 0.13), transparent 60%);
+  background-attachment: fixed;
+  color: var(--color-foam);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Party mode: a slow disco wash behind everything. */
+.party-glow::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(30rem 30rem at 20% 20%, rgb(255 61 99 / 0.22), transparent 60%),
+    radial-gradient(30rem 30rem at 80% 30%, rgb(255 194 51 / 0.2), transparent 60%),
+    radial-gradient(30rem 30rem at 50% 90%, rgb(31 214 159 / 0.16), transparent 60%);
+  animation: party-spin 18s linear infinite;
+}
+
+@keyframes party-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "members": [
+    { "username": "charlie", "displayName": "Charlie", "isHost": true },
+    { "username": "fergus", "displayName": "Fergus" },
+    { "username": "max", "displayName": "Max" },
+    { "username": "jamie", "displayName": "Jamie" },
+    { "username": "jack", "displayName": "Jack" },
+    { "username": "thomas", "displayName": "Thomas", "password": "pick-your-own-123" }
+  ]
+}
