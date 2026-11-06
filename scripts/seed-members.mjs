@@ -59,8 +59,8 @@ const members = list.map((m, i) => {
   if (displayName.length < 1 || displayName.length > 40) {
     fail(`${where}: displayName must be 1–40 characters.`);
   }
-  if (m.password != null && String(m.password).length < 8) {
-    fail(`${where}: passwords need at least 8 characters (or leave it out to generate one).`);
+  if (m.password != null && String(m.password).length < 6) {
+    fail(`${where}: passwords need at least 6 characters (or leave it out to generate one).`);
   }
   return {
     username,
@@ -161,14 +161,13 @@ if (handout.some((h) => h.password)) {
 
 // ---------------------------------------------------------------- helpers
 function makePassword() {
+  // Easy to remember on a night out: one drinking word and two digits.
+  // Every word is 4+ letters so it clears Supabase's 6-character minimum.
   const words = [
-    "pint", "lager", "cider", "stout", "shandy", "porter", "bitter", "ale",
-    "kebab", "chippy", "toastie", "crisps", "pasty", "brew", "biscuit", "quid",
-    "banter", "kettle", "telly", "sofa", "duvet", "hoover", "radiator", "boiler",
-    "frothy", "fizzy", "soggy", "cheeky", "dodgy", "grotty", "proper", "minted",
-  ];
-  const pick = () => words[randomInt(words.length)];
-  return `${pick()}-${pick()}-${pick()}-${randomInt(10, 100)}`;
+    "pint", "lager", "cider", "stout", "shandy", "porter", "bitter", "jager",
+    "shots", "chop", "pitcher", "tequila", "sambuca", "vodka", "prosecco", "pub",
+  ].filter((w) => w.length >= 4);
+  return `${words[randomInt(words.length)]}${randomInt(10, 100)}`;
 }
 
 function fail(message) {

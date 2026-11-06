@@ -56,7 +56,7 @@ There is no sign-up page. You create each account and hand out the details.
 cp scripts/members.example.json scripts/members.json
 ```
 
-Edit `scripts/members.json`: one entry per housemate, with exactly one `"isHost": true` (you). Leave `password` out to have one generated (like `frothy-kebab-boiler-42`), or set your own (8+ characters).
+Edit `scripts/members.json`: one entry per housemate, with exactly one `"isHost": true` (you). Leave `password` out to have one generated (a drinking word plus two digits, like `lager42`), or set your own (6+ characters).
 
 ```bash
 npm run seed
