@@ -161,11 +161,12 @@ if (handout.some((h) => h.password)) {
 
 // ---------------------------------------------------------------- helpers
 function makePassword() {
-  // Easy to remember on a night out: one drinking word and two digits.
-  // Every word is 4+ letters so it clears Supabase's 6-character minimum.
+  // Easy to remember on a night out: a beer brand and two digits.
+  // Every name is 4+ letters so it clears Supabase's 6-character minimum.
   const words = [
-    "pint", "lager", "cider", "stout", "shandy", "porter", "bitter", "jager",
-    "shots", "chop", "pitcher", "tequila", "sambuca", "vodka", "prosecco", "pub",
+    "carling", "peroni", "stella", "fosters", "guinness", "heineken", "madri",
+    "moretti", "corona", "coors", "camden", "estrella", "asahi", "cobra",
+    "budweiser", "kronenbourg",
   ].filter((w) => w.length >= 4);
   return `${words[randomInt(words.length)]}${randomInt(10, 100)}`;
 }
