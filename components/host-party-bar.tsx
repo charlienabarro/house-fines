@@ -8,7 +8,7 @@ import { HostSettings, MotionQueue } from "./host-tools";
 import { useToast } from "./toast";
 import { Button, Sheet } from "./ui";
 
-type HostFn = "next_motion" | "open_voting" | "close_voting" | "skip_motion" | "end_party";
+type HostFn = "next_motion" | "close_voting" | "skip_motion" | "end_party";
 
 // Sticky control bar at the bottom of the host's phone during fines night.
 export function HostPartyBar({
@@ -51,17 +51,7 @@ export function HostPartyBar({
 
   let status: string;
   let controls: ReactNode;
-  if (phase === "discussion") {
-    status = "Discussing";
-    controls = (
-      <>
-        <Button size="lg" className="flex-1" busy={busy} onClick={() => call("open_voting")}>
-          Open voting
-        </Button>
-        {skip}
-      </>
-    );
-  } else if (phase === "voting") {
+  if (phase === "voting") {
     status = `Voting · ${current?.votes_cast ?? 0} of ${eligible} in`;
     controls = (
       <>

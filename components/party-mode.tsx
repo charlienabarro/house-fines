@@ -139,7 +139,6 @@ function MotionStage({
 
       <ChargeSheet reason={motion.reason} punishment={motion.punishment} />
 
-      {state.phase === "discussion" ? <DiscussionNote /> : null}
       {state.phase === "voting" ? (
         <VotePanel
           motion={motion}
@@ -168,16 +167,6 @@ function ChargeSheet({ reason, punishment }: { reason: string; punishment: strin
         </p>
       ) : null}
     </div>
-  );
-}
-
-function DiscussionNote() {
-  return (
-    <Card className="text-center">
-      <p className="text-4xl">🗣️</p>
-      <p className="mt-2 font-display text-2xl">Discussion time</p>
-      <p className="mt-1 text-night-300">Make your case. Voting opens when the host says so.</p>
-    </Card>
   );
 }
 

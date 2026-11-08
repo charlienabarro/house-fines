@@ -89,8 +89,7 @@ Then open `http://<your-mac's-IP>:3000` on each phone (find the IP in System Set
 1. **During the week** the host card under the form shows **In the pot**, a hidden list of submitted motions. Bin anything that's a joke or out of order. You can also set how many motions each person can send per week (default 10) and whether the accused can vote on their own motion.
 2. **Start fines night.** If this week's deadline hasn't passed yet, you'll be asked whether to close submissions early and include this week's motions.
 3. Every phone flips to party mode. Your phone gets a control bar at the bottom:
-   - **Call the first motion / Next motion**: brings up a random motion for discussion.
-   - **Open voting**: everyone gets Fine / No fine buttons. Votes stay hidden; you only see how many are in.
+   - **Call the first motion / Next motion**: brings up a random motion, and voting opens straight away. Everyone gets Fine / No fine buttons and can argue it out while they're up. Votes stay hidden; you only see how many are in.
    - **Close & reveal**: stamps the verdict and shows who voted which way.
    - **Skip**: throws the current motion out (and any votes on it) and moves on.
    - **Settings & queue**: the accused-can-vote switch, motions still to come (with the bin button), and **End fines night**.
