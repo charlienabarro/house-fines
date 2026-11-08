@@ -89,7 +89,7 @@ export function HostPartyBar({
     status = "All done";
     controls = (
       <Button variant="fine" size="lg" className="w-full" onClick={() => setSheet("end")}>
-        End fines night
+        {state.practice ? "End practice" : "End fines night"}
       </Button>
     );
   }
@@ -119,18 +119,22 @@ export function HostPartyBar({
           <HostSettings state={state} refresh={refresh} />
           <MotionQueue motions={pending} members={members} refresh={refresh} heading="Still in the pot" />
           <Button variant="danger" className="w-full" onClick={() => setSheet("end")}>
-            End fines night
+            {state.practice ? "End practice" : "End fines night"}
           </Button>
         </div>
       </Sheet>
 
-      <Sheet open={sheet === "end"} onClose={() => setSheet(null)} title="End fines night?">
+      <Sheet
+        open={sheet === "end"}
+        onClose={() => setSheet(null)}
+        title={state.practice ? "End practice?" : "End fines night?"}
+      >
         <p className="text-night-300">
-          This archives tonight&apos;s motions to the history page and switches everyone back to
-          submissions.
-          {remaining > 0
-            ? ` ${plural(remaining, "motion")} haven't been heard and will stay secret.`
-            : ""}
+          {state.practice
+            ? "Everything goes back exactly as it was: every motion becomes unheard again, votes are wiped, nothing is saved to history, and submissions reopen."
+            : `This archives tonight's motions to the history page and switches everyone back to submissions.${
+                remaining > 0 ? ` ${plural(remaining, "motion")} haven't been heard and will stay secret.` : ""
+              }`}
         </p>
         <div className="mt-5 grid gap-3">
           <Button variant="fine" size="lg" busy={busy} onClick={() => call("end_party")}>

@@ -20,6 +20,8 @@ export interface AppState {
   accused_can_vote: boolean;
   submission_limit: number;
   party_started_at: string | null;
+  /** A practice run: ending it resets everything instead of archiving. */
+  practice: boolean;
   updated_at: string;
 }
 

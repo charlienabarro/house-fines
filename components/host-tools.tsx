@@ -24,13 +24,16 @@ export function HostSubmitPanel({
   const notify = useToast();
   const [busy, startTransition] = useTransition();
   const [asking, setAsking] = useState(false);
+  const [practicing, setPracticing] = useState(false);
   const { status, pending } = submit;
 
-  const start = (includeCurrent: boolean) => {
+  const start = (includeCurrent: boolean, practice = false) => {
     setAsking(false);
+    setPracticing(false);
     startTransition(async () => {
       const { error } = await createClient().rpc("start_party", {
         p_include_current: includeCurrent,
+        p_practice: practice,
       });
       if (error) notify(error.message, "error");
       await refresh();
@@ -58,6 +61,29 @@ export function HostSubmitPanel({
         Start fines night
       </Button>
       <p className="mt-2 text-center text-sm text-night-300">{ready}</p>
+      <Button variant="ghost" className="mt-3 w-full" onClick={() => setPracticing(true)} disabled={busy}>
+        Practice run
+      </Button>
+
+      <Sheet open={practicing} onClose={() => setPracticing(false)} title="Practice run?">
+        <p className="text-night-300">
+          Runs fines night for real with all the motions submitted so far, so you can test it on a
+          few phones. When you end it, everything goes back exactly as it was: nothing is
+          archived, votes are wiped and submissions reopen.
+        </p>
+        <p className="mt-3 text-sm text-fine-400">
+          Anyone who opens the site while it&apos;s running will see party mode and the
+          accusations too.
+        </p>
+        <div className="mt-5 grid gap-3">
+          <Button size="lg" onClick={() => start(true, true)}>
+            Start practice
+          </Button>
+          <Button variant="ghost" onClick={() => setPracticing(false)}>
+            Cancel
+          </Button>
+        </div>
+      </Sheet>
 
       <div className="mt-5 space-y-3">
         <HostSettings state={state} refresh={refresh} />

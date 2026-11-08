@@ -62,10 +62,17 @@ export function PartyMode({ me, members, state, party, refresh }: Props) {
   return (
     <div className={`space-y-5 ${me.is_host ? "pb-48" : ""}`}>
       <div className="flex items-center justify-between">
-        <span className="inline-flex items-center gap-2 rounded-full bg-fine-500/15 px-3 py-1 text-sm font-bold text-fine-400 ring-1 ring-fine-500/40">
-          <span className="size-2 animate-glow rounded-full bg-fine-500" />
-          Fines night is live
-        </span>
+        {state.practice ? (
+          <span className="inline-flex items-center gap-2 rounded-full bg-beer-400/15 px-3 py-1 text-sm font-bold text-beer-300 ring-1 ring-beer-400/40">
+            <span className="size-2 animate-glow rounded-full bg-beer-400" />
+            Practice run · nothing is saved
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-2 rounded-full bg-fine-500/15 px-3 py-1 text-sm font-bold text-fine-400 ring-1 ring-fine-500/40">
+            <span className="size-2 animate-glow rounded-full bg-fine-500" />
+            Fines night is live
+          </span>
+        )}
         <span className="text-sm text-night-300">
           {heard.length} heard · {remaining} to go
         </span>
