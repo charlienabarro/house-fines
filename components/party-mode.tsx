@@ -35,8 +35,10 @@ export function PartyMode({ me, members, state, party, refresh }: Props) {
   const broughtUp = party.motions.filter((m) => m.status !== "pending").length;
   const remaining = Math.max(0, party.total - broughtUp);
   const tally = buildTally(visible, members);
+  const involved = members.filter((m) => m.active);
   const eligible =
-    members.length - (!state.accused_can_vote && current && members.some((m) => m.id === current.accused_id) ? 1 : 0);
+    involved.length -
+    (!state.accused_can_vote && current && involved.some((m) => m.id === current.accused_id) ? 1 : 0);
 
   let stage;
   if (current) {
@@ -120,7 +122,7 @@ function MotionStage({
   const accused = nameOf(motion.accused_id);
   const isMe = motion.accused_id === me.id;
   const myVote = votes.find((v) => v.motion_id === motion.id && v.member_id === me.id)?.vote ?? null;
-  const canVote = state.accused_can_vote || !isMe;
+  const canVote = me.active && (state.accused_can_vote || !isMe);
   const revealed = state.phase === "revealed" && (motion.status === "passed" || motion.status === "failed");
 
   return (
@@ -144,6 +146,7 @@ function MotionStage({
           motion={motion}
           myVote={myVote}
           canVote={canVote}
+          benched={!me.active}
           eligible={eligible}
           refresh={refresh}
         />
@@ -174,12 +177,14 @@ function VotePanel({
   motion,
   myVote,
   canVote,
+  benched,
   eligible,
   refresh,
 }: {
   motion: Motion;
   myVote: VoteChoice | null;
   canVote: boolean;
+  benched: boolean;
   eligible: number;
   refresh: () => Promise<void>;
 }) {
@@ -201,8 +206,12 @@ function VotePanel({
   if (!canVote) {
     return (
       <Card className="space-y-3 text-center">
-        <p className="text-4xl">🤐</p>
-        <p className="font-semibold">You&apos;re in the dock, so no vote on this one.</p>
+        <p className="text-4xl">{benched ? "🪑" : "🤐"}</p>
+        <p className="font-semibold">
+          {benched
+            ? "You're on the bench tonight, so you're just watching."
+            : "You're in the dock, so no vote on this one."}
+        </p>
         <VoteProgress cast={motion.votes_cast} eligible={eligible} />
       </Card>
     );

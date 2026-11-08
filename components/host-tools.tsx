@@ -86,7 +86,7 @@ export function HostSubmitPanel({
       </Sheet>
 
       <div className="mt-5 space-y-3">
-        <HostSettings state={state} refresh={refresh} />
+        <HostSettings state={state} members={members} refresh={refresh} />
         <MotionQueue motions={pending} members={members} refresh={refresh} heading="In the pot" />
       </div>
 
@@ -115,9 +115,28 @@ export function HostSubmitPanel({
   );
 }
 
-export function HostSettings({ state, refresh }: { state: AppState; refresh: Refresh }) {
+export function HostSettings({
+  state,
+  members,
+  refresh,
+}: {
+  state: AppState;
+  members: Member[];
+  refresh: Refresh;
+}) {
   const notify = useToast();
   const [busy, startTransition] = useTransition();
+
+  const setInvolved = (member: Member, active: boolean) =>
+    startTransition(async () => {
+      const { error } = await createClient().rpc("set_member_active", {
+        p_member_id: member.id,
+        p_active: active,
+      });
+      if (error) notify(error.message, "error");
+      else notify(active ? `${member.display_name} is in.` : `${member.display_name} is sitting this one out.`);
+      await refresh();
+    });
 
   const save = (patch: Partial<Pick<AppState, "accused_can_vote" | "submission_limit">>) =>
     startTransition(async () => {
@@ -164,6 +183,41 @@ export function HostSettings({ state, refresh }: { state: AppState; refresh: Ref
             +
           </button>
         </span>
+      </div>
+
+      <div className="rounded-2xl bg-white/5 px-4 py-3">
+        <p className="font-semibold">Who&apos;s involved</p>
+        <p className="text-sm text-night-300">
+          Anyone switched off can&apos;t be accused, submit or vote, but can still watch.
+        </p>
+        <ul className="mt-2 divide-y divide-white/10">
+          {members
+            .filter((m) => !m.is_host)
+            .map((m) => (
+              <li key={m.id} className="flex items-center justify-between py-2">
+                <span className={m.active ? "font-semibold" : "font-semibold text-night-400"}>
+                  {m.display_name}
+                </span>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={m.active}
+                  aria-label={`${m.display_name} involved`}
+                  disabled={busy}
+                  onClick={() => setInvolved(m, !m.active)}
+                  className={`relative h-8 w-14 shrink-0 rounded-full transition disabled:opacity-50 ${
+                    m.active ? "bg-letoff-500" : "bg-night-600"
+                  }`}
+                >
+                  <span
+                    className={`absolute top-1 size-6 rounded-full bg-foam shadow transition-all ${
+                      m.active ? "left-7" : "left-1"
+                    }`}
+                  />
+                </button>
+              </li>
+            ))}
+        </ul>
       </div>
     </div>
   );

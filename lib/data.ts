@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type {
   AppMode,
   AppState,
+  Member,
   Motion,
   PartyData,
   PendingMotion,
@@ -19,6 +20,15 @@ const MOTION_COLUMNS =
 function unwrap<T>(res: { data: unknown; error: { message: string } | null }): T {
   if (res.error) throw new Error(res.error.message);
   return res.data as T;
+}
+
+export async function loadMembers(supabase: SupabaseClient): Promise<Member[]> {
+  return unwrap<Member[]>(
+    await supabase
+      .from("members")
+      .select("id, username, display_name, is_host, active")
+      .order("display_name"),
+  );
 }
 
 export async function loadState(supabase: SupabaseClient): Promise<AppState> {

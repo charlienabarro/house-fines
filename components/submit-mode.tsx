@@ -118,6 +118,19 @@ function MotionForm({
     });
   };
 
+  if (!me.active) {
+    return (
+      <Card className="text-center">
+        <p className="text-4xl">🪑</p>
+        <h2 className="mt-2 font-display text-3xl tracking-wide">You&apos;re on the bench</h2>
+        <p className="mt-1 text-night-300">
+          The host has you sitting this one out, so you can&apos;t submit, be accused or vote.
+          You can still watch.
+        </p>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       {filed ? <FiledOverlay key={filed.key} name={filed.name} reason={filed.reason} onDone={() => setFiled(null)} /> : null}
@@ -137,7 +150,7 @@ function MotionForm({
               <option value="" disabled>
                 Choose a housemate…
               </option>
-              {members.map((m) => (
+              {members.filter((m) => m.active).map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.id === me.id ? `${m.display_name} (you – a confession?)` : m.display_name}
                 </option>

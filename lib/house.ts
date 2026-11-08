@@ -3,7 +3,7 @@ import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import type { AppState, Member } from "@/lib/types";
 
-const MEMBER_COLUMNS = "id, username, display_name, is_host";
+const MEMBER_COLUMNS = "id, username, display_name, is_host, active";
 
 // Data access for Server Components: who is signed in, the house list and
 // the current mode. Reads the session, so call it inside a <Suspense>.

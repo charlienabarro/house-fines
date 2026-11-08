@@ -106,7 +106,7 @@ export function HostPartyBar({
 
       <Sheet open={sheet === "menu"} onClose={() => setSheet(null)} title="Host menu">
         <div className="space-y-3">
-          <HostSettings state={state} refresh={refresh} />
+          <HostSettings state={state} members={members} refresh={refresh} />
           <MotionQueue motions={pending} members={members} refresh={refresh} heading="Still in the pot" />
           <Button variant="danger" className="w-full" onClick={() => setSheet("end")}>
             {state.practice ? "End practice" : "End fines night"}

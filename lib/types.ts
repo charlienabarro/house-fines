@@ -10,6 +10,8 @@ export interface Member {
   username: string;
   display_name: string;
   is_host: boolean;
+  /** False when the host has them sitting this one out. */
+  active: boolean;
 }
 
 export interface AppState {
