@@ -93,8 +93,9 @@ export function HostSubmitPanel({
       <Sheet open={asking} onClose={() => setAsking(false)} title="Close submissions early?">
         <p className="text-night-300">
           Submissions are open until {formatDeadline(status.deadline)}. Close them now so this
-          week&apos;s {plural(status.motion_count, "motion")} are included? Anything sent after you
-          start goes into next week.
+          week&apos;s {plural(status.motion_count, "motion")} are included? Afterwards the countdown
+          carries on to {formatDeadline(status.deadline)} as normal, with everyone&apos;s count back
+          at zero.
         </p>
         <div className="mt-5 grid gap-3">
           <Button size="lg" onClick={() => start(true)}>
